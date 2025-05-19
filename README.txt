@@ -1,72 +1,69 @@
-README - Avvio del Progetto Pasticceria
+README - Avvio del Progetto “Pasticceria”
 
-Questa guida spiega i passaggi da seguire per eseguire correttamente il sito web della Pasticceria in locale.
+Questa guida illustra i passaggi necessari per eseguire correttamente il sito web della Pasticceria in locale.
 
-------------------------------------------------------------
+────────────────────────────────────────────────────────────
 1) Clonare la repository
-------------------------------------------------------------
-Clona questo progetto nel tuo computer tramite Git oppure scaricalo come file .zip ed estrailo.
+────────────────────────────────────────────────────────────
+Clona il progetto tramite Git o scaricalo come file .zip ed estrailo.
 
-Esempio con Git:
-git clone https://github.com/C-Pascale/pasticceria
+Con Git:
+    git clone https://github.com/C-Pascale/pasticceria
 
-------------------------------------------------------------
-2) Installare Node.js (se non già installato)
-------------------------------------------------------------
-Verifica se Node.js è installato aprendo un terminale e digitando:
+────────────────────────────────────────────────────────────
+2) Installare Node.js (se non già presente)
+────────────────────────────────────────────────────────────
+Verifica l’installazione aprendo un terminale e digitando:
 
     node -v
 
-Se il comando non restituisce un numero di versione, installa Node.js.
-All'interno della cartella `Appoggio` è presente il file di installazione.
+Se non ottieni una versione, installa Node.js.  
+È disponibile un file di installazione all’interno della cartella `Appoggio`.
 
-------------------------------------------------------------
+────────────────────────────────────────────────────────────
 3) Installare JSON Server
-------------------------------------------------------------
-Apri il terminale e installa json-server globalmente:
+────────────────────────────────────────────────────────────
+Apri il terminale ed esegui il comando:
 
     npm install -g json-server
 
-------------------------------------------------------------
-3.1) Problema comune su PowerShell:
-------------------------------------------------------------
-Se ricevi questo errore:
+────────────────────────────────────────────────────────────
+3.1) Problema comune su PowerShell
+────────────────────────────────────────────────────────────
+Se ricevi un errore simile a:
 
-    npm : Impossibile caricare il file C:\Program Files\nodejs\npm.ps1. 
+    npm : Impossibile caricare il file C:\Program Files\nodejs\npm.ps1.
     L'esecuzione di script è disabilitata nel sistema in uso.
 
 Soluzione:
-Apri PowerShell come **Amministratore** ed esegui:
+Apri PowerShell **come amministratore** ed esegui il comando:
 
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
-Conferma digitando `S` quando richiesto.
-
-------------------------------------------------------------
-3.2) Riprova ad installare JSON Server:
-------------------------------------------------------------
+Conferma digitando `S` se richiesto.  
+Dopodiché, ripeti il comando di installazione:
 
     npm install -g json-server
 
-------------------------------------------------------------
-4) Avvio del progetto
-------------------------------------------------------------
-Una volta completati tutti i passaggi precedenti, per avviare tutto automaticamente:
+────────────────────────────────────────────────────────────
+4) Avviare il progetto
+────────────────────────────────────────────────────────────
+Per avviare frontend e backend contemporaneamente:
 
-➤ Esegui il file `start.bat` che si trova all’interno della cartella principale del progetto.
+    ➤ Esegui il file `start.bat` presente nella cartella principale del progetto.
 
-Questo comando:
-- Avvia il server backend (JSON Server)
-- Avvia il frontend (Vite)
+Il file esegue:
+- Il backend (JSON Server)
+- Il frontend (tramite Vite)
 
-------------------------------------------------------------
-5) Accesso al sito
-------------------------------------------------------------
-Una volta avviato tutto correttamente, il sito sarà accessibile all’indirizzo:
+────────────────────────────────────────────────────────────
+5) Accesso all’applicazione
+────────────────────────────────────────────────────────────
+Una volta avviato, il sito sarà disponibile al seguente indirizzo:
 
     http://localhost:5173
 
-------------------------------------------------------------
+────────────────────────────────────────────────────────────
 Contatti
-------------------------------------------------------------
-Per problemi o domande, contatta lo sviluppatore del progetto.
+────────────────────────────────────────────────────────────
+Per problemi, dubbi o chiarimenti, contattare lo sviluppatore del progetto.
