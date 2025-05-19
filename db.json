@@ -1,0 +1,38 @@
+{
+  "dolci": [
+    {
+      "id": "01bdefe9-1a98-4ee8-9bf3-a4db1dea314c",
+      "nome": "torta di mele",
+      "prezzo": 10.01,
+      "data": "2025-05-19",
+      "quantita": 3,
+      "ingredienti": []
+    },
+    {
+      "nome": "cannolo",
+      "prezzo": 1.5,
+      "data": "2025-05-19",
+      "quantita": 1,
+      "ingredienti": [],
+      "id": "24b7ae3b-4c16-4daa-a207-b887a2d63195"
+    },
+    {
+      "nome": "sfogliatella",
+      "prezzo": 2,
+      "data": "2025-05-19",
+      "quantita": 5,
+      "ingredienti": [],
+      "id": "18375ceb-79b3-4526-91bd-6637ecc4004d"
+    }
+  ],
+  "utenti": [
+    {
+      "user": "mario",
+      "pass": "1234"
+    },
+    {
+      "user": "carmine",
+      "pass": "test"
+    }
+  ]
+}
