@@ -3,6 +3,26 @@ README - Avvio del Progetto “Pasticceria”
 Questa guida illustra i passaggi necessari per eseguire correttamente il sito web della Pasticceria in locale.
 
 ────────────────────────────────────────────────────────────
+Funzionalità del progetto
+────────────────────────────────────────────────────────────
+- Visualizzazione dei dolci disponibili nella vetrina
+- Gestione dolci (aggiunta, modifica e cancellazione) via Backoffice
+- Salvataggio dei dati tramite JSON Server simulando un backend REST
+- Carousel automatico sulla homepage
+- Validazioni per evitare duplicati o dati errati
+- Interfaccia utente responsive
+
+────────────────────────────────────────────────────────────
+Tecnologie utilizzate
+────────────────────────────────────────────────────────────
+- Vite (React)
+- Bootstrap 5
+- TypeScript
+- JSON Server (mock REST API)
+- React Hooks (useState, useEffect, useMemo)
+- HTML, CSS (Bootstrap Utility Classes)
+
+────────────────────────────────────────────────────────────
 1) Clonare la repository
 ────────────────────────────────────────────────────────────
 Clona il progetto tramite Git o scaricalo come file .zip ed estrailo.
@@ -36,7 +56,7 @@ Se ricevi un errore simile a:
     L'esecuzione di script è disabilitata nel sistema in uso.
 
 Soluzione:
-Apri PowerShell **come amministratore** ed esegui il comando:
+Apri PowerShell come amministratore ed esegui il comando:
 
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
@@ -50,7 +70,7 @@ Dopodiché, ripeti il comando di installazione:
 ────────────────────────────────────────────────────────────
 Per avviare frontend e backend contemporaneamente:
 
-    ➤ Esegui il file `start.bat` presente nella cartella principale del progetto.
+Esegui il file `start.bat` presente nella cartella principale del progetto.
 
 Il file esegue:
 - Il backend (JSON Server)
