@@ -8,7 +8,7 @@ Questa guida spiega i passaggi da seguire per eseguire correttamente il sito web
 Clona questo progetto nel tuo computer tramite Git oppure scaricalo come file .zip ed estrailo.
 
 Esempio con Git:
-git clone https://github.com/tuo-utente/tuo-repo.git
+git clone https://github.com/C-Pascale/pasticceria
 
 ------------------------------------------------------------
 2) Installare Node.js (se non già installato)
