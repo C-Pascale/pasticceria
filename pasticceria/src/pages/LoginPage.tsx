@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; // importa il context
 import LoginForm from "../components/LoginForm";
-import { login } from "../services/api";
 import NavigationBar from "../components/NavigationBar";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth(); // usa il login dal context
+
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
@@ -17,9 +19,8 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    //Gestione errori di login
     try {
-      const result = await login(user, pass);
+      const result = await login(user, pass); // usa la funzione dal context
       if (result) {
         setSuccess(true);
         setTimeout(() => navigate("/backoffice"), 1500);
@@ -37,7 +38,6 @@ export default function LoginPage() {
     <NavigationBar>
       <title>Login - Backoffice</title>
 
-      {/*Contenitore Login*/}
       <div
         className="d-flex justify-content-center align-items-center"
         style={{
@@ -65,7 +65,6 @@ export default function LoginPage() {
             🎂 Area Riservata
           </h2>
 
-          {/*Form Login*/}
           <LoginForm
             user={user}
             pass={pass}
@@ -78,9 +77,7 @@ export default function LoginPage() {
             onRegisterClick={() => navigate("/register")}
           />
 
-          {/*Pulsante Login*/}
           <div className="text-center mt-4">
-            {/*Passaggio alla registrazione*/}
             <button
               className="btn btn-link p-0"
               style={{

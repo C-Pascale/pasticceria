@@ -9,14 +9,6 @@
       "ingredienti": []
     },
     {
-      "nome": "cannolo",
-      "prezzo": 1.5,
-      "data": "2025-05-19",
-      "quantita": 1,
-      "ingredienti": [],
-      "id": "24b7ae3b-4c16-4daa-a207-b887a2d63195"
-    },
-    {
       "nome": "sfogliatella",
       "prezzo": 2,
       "data": "2025-05-19",
@@ -28,11 +20,18 @@
   "utenti": [
     {
       "user": "mario",
-      "pass": "1234"
+      "pass": "1234",
+      "id": "e149"
     },
     {
       "user": "carmine",
-      "pass": "test"
+      "pass": "test",
+      "id": "52ad"
+    },
+    {
+      "id": "21ca",
+      "user": "Carmine",
+      "pass": "pass"
     }
   ]
 }

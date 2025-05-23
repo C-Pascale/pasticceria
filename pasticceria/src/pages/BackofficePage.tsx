@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom"; // importa useNavigate
 import { v4 as uuidv4 } from "uuid";
 import type { Dolce } from "../types";
 import {
@@ -11,9 +12,9 @@ import DolceForm from "../components/DolceForm";
 import DolciList from "../components/DolciList";
 import NavigationBar from "../components/NavigationBar";
 import DuplicateWarning from "../components/DuplicateWarning";
-import { Alert } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
+import { useAuth } from "../context/AuthContext"; // importa useAuth
 
-// Data del giorno per l'inserimento
 const oggi = new Date().toISOString().split("T")[0];
 
 export default function Backoffice() {
@@ -28,6 +29,9 @@ export default function Backoffice() {
   });
   const [error, setError] = useState<string | null>(null);
 
+  const { logout } = useAuth(); // prendi logout dal context
+  const navigate = useNavigate(); // per redirect dopo logout
+
   useEffect(() => {
     getDolci().then(setDolci);
   }, []);
@@ -41,7 +45,6 @@ export default function Backoffice() {
   }, [form.nome, dolci, editingId]);
 
   const handleSubmit = async () => {
-    // Validazioni
     if (form.quantita <= 0) {
       setError("Quantità non valida.");
       return;
@@ -76,7 +79,6 @@ export default function Backoffice() {
       setDolci((list) => [...list, dolceToSave]);
     }
 
-    // Reset form
     setForm({ nome: "", prezzo: 0, data: oggi, quantita: 0, ingredienti: [] });
     setEditingId(null);
   };
@@ -98,6 +100,12 @@ export default function Backoffice() {
     setError(null);
   };
 
+  // Funzione logout e redirect
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <NavigationBar>
       <title>Backoffice Pasticceria</title>
@@ -110,18 +118,17 @@ export default function Backoffice() {
         }}
       >
         <div className="container">
-          {/* Titolo Pagina */}
-          <header className="text-center mb-5">
+          {/* Header con titolo e logout */}
+          <header className="d-flex justify-content-between align-items-center mb-5">
             <h1 className="display-4 fw-bold" style={{ color: "#6f4e37" }}>
-              🍩 Gestione Dolci
+              Gestione Dolci
             </h1>
-            <p className="lead fst-italic" style={{ color: "#6f4e37" }}>
-              Aggiungi, modifica o elimina i dolci esposti in vetrina.
-            </p>
+            <Button variant="outline-danger" onClick={handleLogout}>
+              Logout
+            </Button>
           </header>
 
           <div className="row g-5">
-            {/* Form */}
             <section className="col-12 col-md-5">
               <div
                 className="card shadow-lg rounded-5 p-4 h-100"
@@ -131,7 +138,7 @@ export default function Backoffice() {
                 }}
               >
                 <h5 className="fw-bold mb-4" style={{ color: "#d65a4a" }}>
-                  {editingId ? "✏️ Modifica Dolce" : "➕ Nuovo Dolce"}
+                  {editingId ? "Modifica Dolce" : "Nuovo Dolce"}
                 </h5>
 
                 <DolceForm
@@ -143,13 +150,12 @@ export default function Backoffice() {
                 <DuplicateWarning show={isDuplicate} />
                 {error && (
                   <Alert variant="danger" className="mt-3">
-                    ❌ {error}
+                    {error}
                   </Alert>
                 )}
               </div>
             </section>
 
-            {/* Lista Dolci */}
             <section className="col-12 col-md-7">
               <div
                 className="card shadow-lg rounded-5 p-4 h-100"
@@ -160,7 +166,7 @@ export default function Backoffice() {
                 }}
               >
                 <h5 className="fw-bold mb-4" style={{ color: "#4caf50" }}>
-                  🍰 Lista Dolci
+                  Lista Dolci
                 </h5>
                 {dolci.length > 0 ? (
                   <DolciList

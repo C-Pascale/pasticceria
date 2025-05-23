@@ -117,7 +117,7 @@ export default function NavigationBar({ children }: { children: ReactNode }) {
                       backgroundColor: "#b85c38",
                       borderColor: "#b85c38",
                     }}
-                    onClick={() => navigate("/login")}
+                    onClick={() => navigate("/backoffice")}
                   >
                     Vai al Backoffice
                   </Button>
