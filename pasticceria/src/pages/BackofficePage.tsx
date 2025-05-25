@@ -15,6 +15,9 @@ import DuplicateWarning from "../components/DuplicateWarning";
 import { Alert, Button } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 import DeleteConfirmModal from "../components/DeleteConfirmationModal";
+import { EditSuccessToast } from "../components/EditSuccessToast";
+import { DeleteSuccessToast } from "../components/DeleteSuccessToast";
+import { CreateSuccessToast } from "../components/CreatSuccessToast";
 
 const oggi = new Date().toISOString().split("T")[0];
 
@@ -35,11 +38,16 @@ export default function Backoffice() {
   const [dolceDaRimuovere, setDolceDaRimuovere] = useState<Dolce | null>(null);
   const [showConferma, setShowConferma] = useState(false);
 
+  // Nuovi stati per toast
+  const [showEditToast, setShowEditToast] = useState(false);
+  const [showDeleteToast, setShowDeleteToast] = useState(false);
+  const [showCreateToast, setShowCreateToast] = useState(false);
+  const [toastDolceName, setToastDolceName] = useState("");
+
   useEffect(() => {
     getDolci().then(setDolci);
   }, []);
 
-  //Controllo Dolce duplicato
   const isDuplicate = useMemo(() => {
     return dolci.some(
       (d) =>
@@ -48,7 +56,6 @@ export default function Backoffice() {
     );
   }, [form.nome, dolci, editingId]);
 
-  //Inserimento Dolce
   const handleSubmit = async () => {
     if (form.quantita <= 0) {
       setError("Quantità non valida.");
@@ -80,16 +87,19 @@ export default function Backoffice() {
       setDolci((list) =>
         list.map((d) => (d.id === editingId ? dolceToSave : d))
       );
+      setToastDolceName(dolceToSave.nome);
+      setShowEditToast(true);
     } else {
       await createDolce(dolceToSave);
       setDolci((list) => [...list, dolceToSave]);
+      setToastDolceName(dolceToSave.nome);
+      setShowCreateToast(true);
     }
 
     setForm({ nome: "", prezzo: 0, data: oggi, quantita: 0, ingredienti: [] });
     setEditingId(null);
   };
 
-  //Eliminazione Dolce
   const handleRequestDelete = (id: string) => {
     const dolce = dolci.find((d) => d.id === id);
     if (dolce) {
@@ -102,12 +112,13 @@ export default function Backoffice() {
     if (dolceDaRimuovere) {
       await deleteDolce(dolceDaRimuovere.id);
       setDolci((list) => list.filter((d) => d.id !== dolceDaRimuovere.id));
+      setToastDolceName(dolceDaRimuovere.nome);
+      setShowDeleteToast(true);
       setShowConferma(false);
       setDolceDaRimuovere(null);
     }
   };
 
-  //Modifica Dolce
   const handleEdit = (dolce: Dolce) => {
     setEditingId(dolce.id);
     setForm({
@@ -120,7 +131,6 @@ export default function Backoffice() {
     setError(null);
   };
 
-  // Funzione logout e redirect
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -138,7 +148,6 @@ export default function Backoffice() {
         }}
       >
         <div className="container">
-          {/* Header con titolo e logout */}
           <header className="d-flex justify-content-between align-items-center mb-5">
             <h1 className="display-4 fw-bold" style={{ color: "#6f4e37" }}>
               Gestione Dolci
@@ -161,7 +170,6 @@ export default function Backoffice() {
                   {editingId ? "Modifica Dolce" : "Nuovo Dolce"}
                 </h5>
 
-                {/*Form del Dolce*/}
                 <DolceForm
                   form={form}
                   editing={!!editingId}
@@ -186,7 +194,6 @@ export default function Backoffice() {
                   maxHeight: "75vh",
                 }}
               >
-                {/*Lista Dolci*/}
                 <h5 className="fw-bold mb-4" style={{ color: "#4caf50" }}>
                   Lista Dolci
                 </h5>
@@ -210,13 +217,30 @@ export default function Backoffice() {
         </div>
       </main>
 
-      {/*PopUp Conferma eliminazione*/}
       <DeleteConfirmModal
         show={showConferma}
         dolce={dolceDaRimuovere}
         onClose={() => setShowConferma(false)}
         onConfirm={handleDelete}
       />
+
+      <>
+        <EditSuccessToast
+          show={showEditToast}
+          onClose={() => setShowEditToast(false)}
+          dolceNome={toastDolceName}
+        />
+        <DeleteSuccessToast
+          show={showDeleteToast}
+          onClose={() => setShowDeleteToast(false)}
+          dolceNome={toastDolceName}
+        />
+        <CreateSuccessToast
+          show={showCreateToast}
+          onClose={() => setShowCreateToast(false)}
+          dolceNome={toastDolceName}
+        />
+      </>
     </NavigationBar>
   );
 }
