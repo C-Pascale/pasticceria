@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom"; // importa useNavigate
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import type { Dolce } from "../types";
 import {
@@ -13,7 +13,8 @@ import DolciList from "../components/DolciList";
 import NavigationBar from "../components/NavigationBar";
 import DuplicateWarning from "../components/DuplicateWarning";
 import { Alert, Button } from "react-bootstrap";
-import { useAuth } from "../context/AuthContext"; // importa useAuth
+import { useAuth } from "../context/AuthContext";
+import DeleteConfirmModal from "../components/DeleteConfirmationModal";
 
 const oggi = new Date().toISOString().split("T")[0];
 
@@ -29,13 +30,16 @@ export default function Backoffice() {
   });
   const [error, setError] = useState<string | null>(null);
 
-  const { logout } = useAuth(); // prendi logout dal context
-  const navigate = useNavigate(); // per redirect dopo logout
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const [dolceDaRimuovere, setDolceDaRimuovere] = useState<Dolce | null>(null);
+  const [showConferma, setShowConferma] = useState(false);
 
   useEffect(() => {
     getDolci().then(setDolci);
   }, []);
 
+  //Controllo Dolce duplicato
   const isDuplicate = useMemo(() => {
     return dolci.some(
       (d) =>
@@ -44,6 +48,7 @@ export default function Backoffice() {
     );
   }, [form.nome, dolci, editingId]);
 
+  //Inserimento Dolce
   const handleSubmit = async () => {
     if (form.quantita <= 0) {
       setError("Quantità non valida.");
@@ -53,10 +58,11 @@ export default function Backoffice() {
       setError("Il nome del dolce è obbligatorio.");
       return;
     }
-    if (form.prezzo <= 0) {
-      setError("Il prezzo deve essere maggiore di zero.");
+    if (isNaN(form.prezzo) || form.prezzo <= 0) {
+      setError("Il prezzo deve essere un numero maggiore di zero.");
       return;
     }
+
     if (isDuplicate) {
       setError("Questo dolce è già presente.");
       return;
@@ -83,11 +89,25 @@ export default function Backoffice() {
     setEditingId(null);
   };
 
-  const handleDelete = async (id: string) => {
-    await deleteDolce(id);
-    setDolci((list) => list.filter((d) => d.id !== id));
+  //Eliminazione Dolce
+  const handleRequestDelete = (id: string) => {
+    const dolce = dolci.find((d) => d.id === id);
+    if (dolce) {
+      setDolceDaRimuovere(dolce);
+      setShowConferma(true);
+    }
   };
 
+  const handleDelete = async () => {
+    if (dolceDaRimuovere) {
+      await deleteDolce(dolceDaRimuovere.id);
+      setDolci((list) => list.filter((d) => d.id !== dolceDaRimuovere.id));
+      setShowConferma(false);
+      setDolceDaRimuovere(null);
+    }
+  };
+
+  //Modifica Dolce
   const handleEdit = (dolce: Dolce) => {
     setEditingId(dolce.id);
     setForm({
@@ -141,6 +161,7 @@ export default function Backoffice() {
                   {editingId ? "Modifica Dolce" : "Nuovo Dolce"}
                 </h5>
 
+                {/*Form del Dolce*/}
                 <DolceForm
                   form={form}
                   editing={!!editingId}
@@ -165,6 +186,7 @@ export default function Backoffice() {
                   maxHeight: "75vh",
                 }}
               >
+                {/*Lista Dolci*/}
                 <h5 className="fw-bold mb-4" style={{ color: "#4caf50" }}>
                   Lista Dolci
                 </h5>
@@ -172,7 +194,7 @@ export default function Backoffice() {
                   <DolciList
                     dolci={dolci}
                     onEdit={handleEdit}
-                    onDelete={handleDelete}
+                    onDelete={handleRequestDelete}
                   />
                 ) : (
                   <p
@@ -187,6 +209,14 @@ export default function Backoffice() {
           </div>
         </div>
       </main>
+
+      {/*PopUp Conferma eliminazione*/}
+      <DeleteConfirmModal
+        show={showConferma}
+        dolce={dolceDaRimuovere}
+        onClose={() => setShowConferma(false)}
+        onConfirm={handleDelete}
+      />
     </NavigationBar>
   );
 }

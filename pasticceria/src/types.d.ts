@@ -1,5 +1,3 @@
-
-
 export type Dolce = {
   id: string;
   nome: string;

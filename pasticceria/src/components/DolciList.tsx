@@ -71,6 +71,7 @@ export default function DolciList({ dolci, onEdit, onDelete }: Props) {
               <td style={{ color: "#388e3c", fontWeight: 600 }}>
                 €{d.prezzo.toFixed(2)}
               </td>
+
               <td>{d.quantita}</td>
               <td className="text-muted fst-italic">
                 {new Date(d.data).toLocaleDateString()}

@@ -16,25 +16,23 @@ export default function DolceForm({
   onChange,
   onSubmit,
 }: Props) {
-  const [localPrice, setLocalPrice] = useState(
-    form.prezzo.toString().replace(".", ",")
+  const [localPrezzo, setLocalPrezzo] = useState(
+    form.prezzo === 0 ? "" : form.prezzo.toString()
   );
 
   useEffect(() => {
-    setLocalPrice(form.prezzo.toString().replace(".", ","));
+    setLocalPrezzo(form.prezzo === 0 ? "" : form.prezzo.toString());
   }, [form.prezzo]);
 
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePrezzoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setLocalPrice(value);
+    setLocalPrezzo(value);
 
-    if (/^[0-9]+([,][0-9]{0,2})?$/.test(value)) {
-      const numericValue = parseFloat(value.replace(",", "."));
-      onChange({
-        ...form,
-        prezzo: numericValue,
-      });
-    }
+    const parsed = parseFloat(value.replace(",", "."));
+    onChange({
+      ...form,
+      prezzo: isNaN(parsed) ? 0 : parsed,
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,16 +78,16 @@ export default function DolceForm({
       <div className="mb-3">
         <label className="form-label">Prezzo (€)</label>
         <input
-          type="text"
+          type="number"
           name="prezzo"
-          value={localPrice}
-          onChange={handlePriceChange}
+          value={localPrezzo}
+          onChange={handlePrezzoChange}
           className="form-control"
           required
-          inputMode="decimal"
-          pattern="[0-9]+([,][0-9]{0,2})?"
-          title="Inserisci un valore numerico con al massimo 2 decimali (es. 12,50)"
+          min="0"
+          step="0.01"
         />
+
         <small className="text-muted">
           Usa la virgola come separatore decimale
         </small>
